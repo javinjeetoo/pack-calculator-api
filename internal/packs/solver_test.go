@@ -47,6 +47,19 @@ func TestSolve_Examples(t *testing.T) {
 	}
 }
 
+func TestSolve_Boundary4999(t *testing.T) {
+	res, err := Solve(4999, defaultSizes)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if res.ItemsShipped != 5000 {
+		t.Fatalf("expected shipped=5000 got=%d", res.ItemsShipped)
+	}
+	if res.Packs[5000] != 1 || len(res.Packs) != 1 {
+		t.Fatalf("expected packs {5000:1} got=%v", res.Packs)
+	}
+}
+
 func TestSolve_InvalidInput(t *testing.T) {
 	if _, err := Solve(0, defaultSizes); err == nil {
 		t.Fatal("expected error for items=0")
