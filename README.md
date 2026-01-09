@@ -139,4 +139,12 @@ internal/packs/    # Core pack allocation logic and tests
 
 - The service intentionally uses only the Go standard library to keep dependencies minimal.
 - Pack sizes can be changed without code modifications.
-- With more time, the service could be extended with OpenAPI documentation, metrics, tracing, and rate limiting.
+
+## Trade-offs & Future Improvements
+
+- The dynamic programming approach is efficient for the expected input sizes but could be optimised further for extremely large orders.
+- With more time, the service could be extended with:
+  - OpenAPI / Swagger documentation
+  - Metrics and tracing for observability
+  - Input limits and rate limiting
+  - Structured logging
