@@ -136,7 +136,19 @@ A minimal web UI is served at `/` and is embedded into the Go binary (using `go:
 - Start the server and open `http://localhost:8080/`.
 - The UI calls `POST /calculate` and displays the JSON response.
 
-It can be public accessed at: [https://pack-calculator-api.onrender.com](https://pack-calculator-api.onrender.com)
+## Deployment
+
+Deployed URL: [https://pack-calculator-api.onrender.com](https://pack-calculator-api.onrender.com)
+
+Try it:
+
+```bash
+curl https://pack-calculator-api.onrender.com/health
+
+curl -X POST https://pack-calculator-api.onrender.com/calculate \
+  -H "Content-Type: application/json" \
+  -d '{"items":12001}'
+```
 
 ## Project Structure
 
