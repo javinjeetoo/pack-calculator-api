@@ -156,7 +156,7 @@ curl -X POST https://pack-calculator-api.onrender.com/calculate \
 cmd/server/        # Application entry point
 internal/api/      # HTTP handlers
 internal/packs/    # Core pack allocation logic and tests
-web/               # Basic html UI to interact with the API
+internal/ui/web/   # Basic html UI to interact with the API
 ```
 
 ## Notes
