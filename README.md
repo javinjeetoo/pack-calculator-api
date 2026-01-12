@@ -161,9 +161,10 @@ internal/ui/web/   # Basic html UI to interact with the API
 
 ## Notes
 
-- The service intentionally uses only the Go standard library to keep dependencies minimal.
-- Pack sizes can be changed without code modifications.
-- Requests are validated and capped at 1,000,000 items to protect service performance.
+- The service intentionally uses only the Go standard library to keep dependencies minimal and behaviour explicit.
+- The HTTP server is configured with sensible timeouts and graceful shutdown to ensure clean deploys and reliable behaviour under load.
+- Requests are validated and capped at 1,000,000 items to protect solver performance and prevent resource exhaustion.
+- A CI pipeline with automated tests, builds, and static analysis (golangci-lint) is used to catch issues early and maintain code quality.
 
 ## Trade-offs & Future Improvements
 
