@@ -7,6 +7,8 @@ import (
 	"github.com/javinjeetoo/pack-calculator-api/internal/packs"
 )
 
+const maxItems = 1_000_000
+
 type CalculateRequest struct {
 	Items     int   `json:"items"`
 	PackSizes []int `json:"pack_sizes,omitempty"`
@@ -40,6 +42,16 @@ func (h *Handler) Calculate(w http.ResponseWriter, r *http.Request) {
 	dec.DisallowUnknownFields()
 	if err := dec.Decode(&req); err != nil {
 		writeJSON(w, http.StatusBadRequest, ErrorResponse{Error: "invalid JSON: " + err.Error()})
+		return
+	}
+
+	// Input validation / guardrail (protect DP solver)
+	if req.Items <= 0 {
+		writeJSON(w, http.StatusBadRequest, ErrorResponse{Error: "items must be > 0"})
+		return
+	}
+	if req.Items > maxItems {
+		writeJSON(w, http.StatusBadRequest, ErrorResponse{Error: "items must be <= 1000000"})
 		return
 	}
 

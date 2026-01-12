@@ -163,6 +163,7 @@ web/               # Basic html UI to interact with the API
 
 - The service intentionally uses only the Go standard library to keep dependencies minimal.
 - Pack sizes can be changed without code modifications.
+- Requests are validated and capped at 1,000,000 items to protect service performance.
 
 ## Trade-offs & Future Improvements
 
