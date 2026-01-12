@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/javinjeetoo/pack-calculator-api/internal/api"
+	"github.com/javinjeetoo/pack-calculator-api/internal/ui"
 )
 
 func main() {
@@ -32,7 +33,11 @@ func main() {
 	mux.HandleFunc("/calculate", h.Calculate)
 
 	// UI served at /
-	mux.Handle("/", http.FileServer(http.Dir("./web")))
+	uiHandler, err := ui.Handler()
+	if err != nil {
+		log.Fatal(err)
+	}
+	mux.Handle("/", uiHandler)
 
 	log.Printf("listening on :%s", port)
 	if err := http.ListenAndServe(":"+port, mux); err != nil {
