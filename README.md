@@ -1,5 +1,7 @@
 # Pack Calculator API
 
+![CI](../../actions/workflows/ci.yml/badge.svg)
+
 A Go-based HTTP API that calculates the optimal pack allocation to fulfil an order, ensuring:
 
 - only whole packs are shipped,
