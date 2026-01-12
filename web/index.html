@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pack Calculator</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 2rem; max-width: 900px; }
+    h1 { margin-bottom: 0.25rem; }
+    .hint { color: #555; margin-top: 0; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 1rem; margin: 1rem 0; }
+    label { display:block; margin: 0.5rem 0 0.25rem; font-weight: 600; }
+    input { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; }
+    button { margin-top: 1rem; padding: 0.7rem 1rem; border-radius: 10px; border: 1px solid #111; background: #111; color: #fff; cursor: pointer; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    pre { background: #f6f6f6; padding: 1rem; border-radius: 12px; overflow: auto; }
+    .row { display:grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 700px) { .row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <h1>Pack Calculator</h1>
+  <p class="hint">A minimal UI for interacting with the <code>POST /calculate</code> API.</p>
+
+  <div class="card">
+    <div class="row">
+      <div>
+        <label for="items">Items ordered</label>
+        <input id="items" type="number" min="1" value="12001" />
+      </div>
+      <div>
+        <label for="packs">Pack sizes (optional, comma-separated)</label>
+        <input id="packs" type="text" placeholder="250,500,1000,2000,5000" />
+      </div>
+    </div>
+    <button id="btn">Calculate</button>
+  </div>
+
+  <div class="card">
+    <h2>Result</h2>
+    <pre id="out">{}</pre>
+  </div>
+
+  <script>
+    const btn = document.getElementById("btn");
+    const itemsEl = document.getElementById("items");
+    const packsEl = document.getElementById("packs");
+    const outEl = document.getElementById("out");
+
+    function parsePackSizes(s) {
+      const trimmed = s.trim();
+      if (!trimmed) return null;
+      const parts = trimmed.split(",").map(x => x.trim()).filter(Boolean);
+      const nums = parts.map(p => Number(p));
+      if (nums.some(n => !Number.isInteger(n) || n <= 0)) {
+        throw new Error("Pack sizes must be positive integers, e.g. 250,500,1000");
+      }
+      return nums;
+    }
+
+    btn.addEventListener("click", async () => {
+      btn.disabled = true;
+      outEl.textContent = "Loading...";
+
+      try {
+        const items = Number(itemsEl.value);
+        if (!Number.isInteger(items) || items <= 0) {
+          throw new Error("Items must be a positive integer.");
+        }
+
+        const payload = { items };
+        const sizes = parsePackSizes(packsEl.value);
+        if (sizes && sizes.length) payload.pack_sizes = sizes;
+
+        const res = await fetch("/calculate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+
+        outEl.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        outEl.textContent = JSON.stringify({ error: String(e.message || e) }, null, 2);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

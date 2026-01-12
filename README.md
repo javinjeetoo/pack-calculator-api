@@ -127,12 +127,21 @@ Run the container:
 The API will be available at:
 `http://localhost:8080`
 
+## UI (Optional)
+
+A minimal web UI is available at `/` for interacting with the API.
+
+- Start the server and open `http://localhost:8080/`.
+- The UI calls `POST /calculate` and displays the JSON response.
+
+
 ## Project Structure
 
 ```json
 cmd/server/        # Application entry point
 internal/api/      # HTTP handlers
 internal/packs/    # Core pack allocation logic and tests
+web/               # Basic html UI to interact with the API
 ```
 
 ## Notes

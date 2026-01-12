@@ -31,6 +31,9 @@ func main() {
 	mux.HandleFunc("/health", h.Health)
 	mux.HandleFunc("/calculate", h.Calculate)
 
+	// UI served at /
+	mux.Handle("/", http.FileServer(http.Dir("./web")))
+
 	log.Printf("listening on :%s", port)
 	if err := http.ListenAndServe(":"+port, mux); err != nil {
 		log.Fatal(err)
