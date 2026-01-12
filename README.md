@@ -129,11 +129,12 @@ The API will be available at:
 
 ## UI (Optional)
 
-A minimal web UI is available at `/` for interacting with the API.
+A minimal web UI is served at `/` and is embedded into the Go binary (using `go:embed`) to ensure it works reliably in container deployments.
 
 - Start the server and open `http://localhost:8080/`.
 - The UI calls `POST /calculate` and displays the JSON response.
 
+It can be public accessed at: [https://pack-calculator-api.onrender.com](https://pack-calculator-api.onrender.com)
 
 ## Project Structure
 
